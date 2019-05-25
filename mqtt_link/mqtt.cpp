@@ -150,6 +150,8 @@ static void MQTT::mqttCallback (char* topic, byte* payload, unsigned int length)
     theta = json["theta"];
     x = json["x"];
     y = json["y"];
+    delete newMessage;
+    //free(p);
 
     state = STATE_CONEECT_GET;  //change state, let user know there is a message
 }

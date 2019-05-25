@@ -1,7 +1,7 @@
 
 #include "mqtt.h"
 
-MQTT mqtt("wifi-8-2", "062030121", 3, 4, "35.233.174.129", 1883);
+MQTT mqtt("ME91307", "", 3, 4, "35.233.174.129", 1883);
 
 void setup() {
     Serial.begin(9600);
