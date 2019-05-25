@@ -131,13 +131,21 @@ static void MQTT::mqttCallback (char* topic, byte* payload, unsigned int length)
     memcpy(p, payload, length);
 
     int i = 0;
+    /*
     for (; i < length && i < 50; i++) 
         buffer[i] = (char)p[i];
     for (; i < 50; i++)
         buffer[i] = ' ';
+    */
+    char *newMessage = new char[length];
+    newMessage = (char*) p;
 
+    /*
     DynamicJsonDocument json(50); //buffer多大
     deserializeJson(json, buffer);
+    */
+    DynamicJsonDocument json(length); //buffer多大
+    deserializeJson(json, newMessage);
     mode = json["mode"];
     theta = json["theta"];
     x = json["x"];
