@@ -13,7 +13,7 @@ class MQTT {
 public:
     MQTT(String wifiName, String password, int TX, int RX, String serverIp, int serverPort);
     bool connectWifi(int maxTime = 10); // 連網路,最多嘗試maxTime次
-    bool isConnectMQTT(int maxTime = 1, int delayTime = 500);   // 是否連上mqtt,沒有重連
+    bool isConnectMQTT(int maxTime = 1, int delayTime = 20);   // 是否連上mqtt,沒有重連
     bool isNewMessage();    // 是否有新訊息,有的話擷取新訊息
     int getX();
     int getY();
@@ -26,6 +26,8 @@ private:
     int TX, RX, serverPort;
     SoftwareSerial *esp;
     WiFiEspClient *espClient;
+
+public:
     PubSubClient *client;
 
     // state

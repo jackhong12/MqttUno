@@ -48,3 +48,22 @@ c. 在Serial Monitor 輸入 `AT+UART_DEF=9600,8,1,0,0`
 ![arduino_usb_deny](/assets/arduino_usb_deny.png)
 
     sudo chmod a+rw /dev/ttyACM0
+
+# mega
+```
+Esp8266 | Arduino
+-----------------
+     RX | TX
+     TX | RX
+    GND | GND
+    VCC | 5v
+  CH_PD | 5v
+ GPIO 0 | None
+ GPIO 2 | None
+=================
+
+Arduino | Arduino
+-----------------
+  Reset | GND
+=================
+```

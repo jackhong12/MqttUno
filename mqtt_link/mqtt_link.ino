@@ -1,11 +1,13 @@
+
 #include "mqtt.h"
 
-MQTT mqtt("TY1025", "56941205", 3, 4, "35.233.174.129", 1883);
+MQTT mqtt("wifi-8-2", "062030121", 3, 4, "35.233.174.129", 1883);
 
 void setup() {
     Serial.begin(9600);
     mqtt.connectWifi();
-    mqtt.setSubscribe("home/test2");
+    mqtt.setSubscribe("home/test1");
+    //mqtt.client->publish("home/test", "hello");
 }
 
 void loop() {
@@ -19,5 +21,5 @@ void loop() {
         Serial.print("theta: ");
         Serial.println(mqtt.getTheta());
     }
-    delay(20);
+    delay(5);
 }

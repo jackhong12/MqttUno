@@ -1,6 +1,6 @@
 #include "mqtt.h"
 #define MQTT_DEBUG
-
+#define ARDUINO_MEGA
 int MQTT::buffer_length = 0;
 char MQTT::buffer[] = {};
 int MQTT::state = 0;
@@ -21,13 +21,21 @@ MQTT::MQTT (String wifiName, String password, int TX, int RX, String serverIp, i
 
 // 連線wifi最多嘗試maxTime次
 bool MQTT::connectWifi (int maxTime = 10) {
-    esp = new SoftwareSerial(this->TX, this->RX);
     espClient = new WiFiEspClient();
     client = new PubSubClient(*espClient);
 
+#ifndef ARDUINO_MEGA
+    Serial.println("hi1");
+    esp = new SoftwareSerial(this->TX, this->RX);
     esp->begin(EspBuad);  //設定esp8266胞率 
     WiFi.init(esp);
-    
+#else
+    Serial.println("hi");
+
+    Serial1.begin(115200);
+    WiFi.init(&Serial1);
+#endif
+
     const char* name = this->wifiName.c_str();
     const char* password = this->wifiPassword.c_str();
 
@@ -37,7 +45,7 @@ bool MQTT::connectWifi (int maxTime = 10) {
             Serial.println("中止連線\n");
             return false;
         }
-        delay(500);
+        delay(100);
     }
 
     // set server ip and port
@@ -47,7 +55,7 @@ bool MQTT::connectWifi (int maxTime = 10) {
 }
 
 // 是否連上mqtt,沒有的話重連,最多嘗試maxtime次
-bool MQTT::isConnectMQTT (int maxTime = 1, int delayTime = 500) {
+bool MQTT::isConnectMQTT (int maxTime = 1, int delayTime = 20) {
     // 沒有連線重新連線
     while (!this->client->connected()) {
         if (this->client->connect("127.0.0.1")) {
@@ -123,12 +131,12 @@ static void MQTT::mqttCallback (char* topic, byte* payload, unsigned int length)
     memcpy(p, payload, length);
 
     int i = 0;
-    for (; i < length && i < 250; i++) 
+    for (; i < length && i < 50; i++) 
         buffer[i] = (char)p[i];
-    for (; i < 250; i++)
+    for (; i < 50; i++)
         buffer[i] = ' ';
 
-    DynamicJsonDocument json(250); //buffer多大
+    DynamicJsonDocument json(50); //buffer多大
     deserializeJson(json, buffer);
     mode = json["mode"];
     theta = json["theta"];
